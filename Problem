@@ -1,0 +1,28 @@
+SELECT *
+FROM
+(
+SELECT emp_id,
+department_id,
+salary,
+AVG(salary)
+OVER(PARTITION BY department_id) dept_avg
+FROM Employee
+)t
+WHERE salary>dept_avg;
+
+SELECT emp_id,
+salary,
+AVG(salary) OVER(PARTITION BY department_id) AS dept_avg
+FROM Employee;
+
+WITH CTE AS
+(
+SELECT *,
+ROW_NUMBER()
+OVER(PARTITION BY Name
+ORDER BY ID) rn
+FROM Employee
+)
+
+DELETE FROM CTE
+WHERE rn>1;
